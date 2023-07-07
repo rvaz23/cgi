@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    
+    <style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+  height: 280px; /* Should be removed. Only for demonstration */
+}
+        
+        </style>
+    
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        attribute vec4 vNormal;
+        uniform mat4 mModel;
+        uniform mat4 mView;
+        uniform mat4 mProjection;
+        varying vec4 fNormal;
+void main(){
+
+   gl_Position = mProjection * mView * mModel * vPosition;
+   fNormal = abs(vNormal);
+}
+</script>
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec4 fNormal;
+void main() {
+    gl_FragColor = fNormal;
+}
+</script>
+    <script type="text/javascript" src="../Common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../Common/initShaders.js"></script>
+    <script type="text/javascript" src="../Common/MV.js"></script>
+    <script type="text/javascript" src="../Common/cube.js"></script>
+    <script type="text/javascript" src="../Common/sphere.js"></script>
+    <script type="text/javascript" src="../Common/cylinder.js"></script>
+    <script type="text/javascript" src="../Common/bunny.js"></script>
+    <script type="text/javascript" src="../Common/bunny-data.js"></script>
+    <script type="text/javascript" src="../Common/torus.js"></script>
+    <script type="text/javascript" src="superquadric.js"></script>
+    <script type="text/javascript" src="TP2.js"></script>
+</head>
+
+<body>
+    <title>TP2</title>
+    <canvas id="gl-canvas" width="512" height="512">
+        Oops... your browser doesn't support the HTML5 canvas element"
+    </canvas><br>
+    
+    
+    <div class="column" style="background-color:#aaa;">
+        <b>Projection</b>
+     <div class="dropdown">
+        <input type="radio" id="ortho" name="Projection" value="Orto"> Ortogonal<br>
+        <input type="radio" id="axonometric" name="Projection" value="Per"> Axonometrica<br>
+        <input type="radio" id="oblique" name="Projection" value="Per"> Obliqua<br>
+        <input type="radio" id="perspective" name="Projection" value="Per"> Perspectiva<br>
+  </div>
+        <p></p>
+        
+        
+        <div id="orthoDrop" class="dropdown-content">
+            <input type="radio" id="principal" name="Orto" value="p"> Principal<br>
+            <input type="radio" id="laterald" name="Orto" value="l"> Lateral<br>
+            <input type="radio" id="planta" name="Orto" value="v"> Planta<br>
+        </div>
+
+        <div id="axonometricDrop" class="dropdown-content">
+            <input type="radio" id="isometric" name="Axo" value="i"> Isometria<br>
+            <input type="radio" id="dimetric" name="Axo" value="d"> Dimetria<br>
+            <input type="radio" id="trimetric" name="Axo" value="v"> Trimetria<br>
+            <input type="radio" id="freeax" name="Axo" value="v"> Livre<br>
+            <div id="freeDropAx" class="dropdown-content">
+                Gamma 0º<input class="slider" id="gammaSlider" max="360" min="0" step="0.01" type="range" value="45">360º<br>
+                Theta 0º<input class="slider" id="thetaSlider" max="360" min="0" step="0.01" type="range" value="45">360º<br>
+            </div>
+        </div>
+
+        <div id="obliqueDrop" class="dropdown-content">
+            <input type="radio" id="cavalier" name="Obl" value="p"> Cavaleira<br>
+            <input type="radio" id="cabinet" name="Obl" value="l"> Gabinete <br>
+            <input type="radio" id="freeob" name="Obl" value="v"> Livre<br>
+            <div id="freeDropOb" class="dropdown-content">
+                l:
+                <br>
+                0<input class="slider" id="limmaSlider" max="1" min="0" step="0.01" type="range" value="0.5">1<br>
+                α:
+                <br>
+                0<input class="slider" id="alphaSlider" max="90" min="0" step="0.01" type="range" value="45">90<br>
+            </div>
+        </div>
+
+        <div id="persepectiveDrop" class="dropdown-content">
+            Distance 0.2 <input class="slider" id="perSlider" max="7" min="0.2" step="0.01" type="range" value="1"> 7<br>
+        </div>
+
+        </div>
+    
+<div class="column" style="background-color:#aaa;">
+    <b>Form</b>
+      <div class="dropdown">
+        <input type="radio" id="cube" name="Form" value="Orto"> Cube<br>
+        <input type="radio" id="sphere" name="Form" value="Per"> Sphere<br>
+        <input type="radio" id="torus" name="Form" value="Per"> Torus<br>
+        <input type="radio" id="bunny" name="Form" value="Per"> Bunny<br>
+        <input type="radio" id="cylinder" name="Form" value="Per"> Cylinder<br>
+        <input type="radio" id="superq" name="Form" value="Per"> SuperQuadric<br>
+    </div>
+    
+    <div id="superqDrop" class="dropdown-content">
+        <p></p>
+                E1: 0<input class="slider" id="e1slider" max="10" min="0" step="0.01" type="range" value="-0.2">10<br>
+                E2: 0<input class="slider" id="e2slider" max="10" min="0" step="0.01" type="range" value="-5">10<br>
+    </div>
+    
+    </div>
+        
+    <div class="column" style="background-color:#aaa;">
+         <p> <b> Z-Buffer:</b>
+            <b id="p1">False</b>
+            </p>
+          <p> <b> Back-Culling:</b>
+            <b id="p2">False</b>
+            </p>
+
+    </div>
+   
+        
+    
+  
+
+
+</body>
+
+</html>

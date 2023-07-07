@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        uniform float t;
+        uniform float ac;
+        attribute vec2 vel;
+        attribute float tInit; 
+        attribute float tExp;
+        attribute vec2 newVel;
+        attribute vec2 vel3;
+        attribute vec3 vColor;
+        varying vec4 fColor; 
+
+        void main(){
+            float op = 1.0;
+            if( t - tInit >= tExp ){  
+    
+                if( t - tInit >= tExp+0.7 ){
+                        
+                    gl_Position = vPosition;
+                    gl_Position.x += vel[0]*(t-tInit)+ newVel[0]* (t-(tInit+tExp))+ vel3[0]*(t-(tInit+tExp+0.7));
+         
+                    gl_Position.y += (vel[1])*(t-tInit) - ac*(t-tInit)*(t-tInit)*0.5 +   newVel[1]* (t-(tInit+tExp))+ vel3[1]*(t-(tInit+tExp+0.7));
+       
+                    fColor = vec4(vColor,op - (t-(tInit+tExp+0.7))/2.2 );
+        
+                }else{
+        
+                    gl_Position = vPosition;
+                    gl_Position.x += vel[0]*(t-tInit)+ newVel[0]* (t-(tInit+tExp));
+                    gl_Position.y += (vel[1])*(t-tInit) - ac*(t-tInit)*(t-tInit)*0.5 +   newVel[1]* (t-(tInit+tExp)) ;
+       
+                    fColor = vec4(vColor,op - (t-(tInit+tExp))/3.5 );
+                }
+            }else{
+    
+                fColor = vec4(vColor,1.0);
+                gl_Position = vPosition;
+                gl_Position.y += vel[1]*(t-tInit) - ac*(t-tInit)*(t-tInit)*0.5;
+                gl_Position.x += vel[0]*(t-tInit);
+            }
+    
+        gl_PointSize = 2.0;
+
+        }
+    </script>
+
+    <script id="vertex-shader-line" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        varying vec4 fColor;
+        
+        void main(){
+
+            gl_Position =vPosition;
+            gl_PointSize = 2.0;
+            fColor = vec4(1.0,0.0,0.0,0.4);
+        }
+    </script>
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec4 fColor;
+
+        void main() {
+        
+            if(distance(gl_PointCoord, vec2(0.5)) > 0.5) discard;
+            gl_FragColor = fColor;
+        }
+    </script>
+
+    <script type="text/javascript" src="../Common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../Common/initShaders.js"></script>
+    <script type="text/javascript" src="../Common/MV.js"></script>
+    <script type="text/javascript" src="CGI-P1.js"></script>
+</head>
+
+<body>
+    <title>CGI-P1-48306-52656</title>
+    <canvas id="gl-canvas" width="512" height="512">
+        Oops... your browser doesn't support the HTML5 canvas element"
+    </canvas>
+</body>
+
+</html>
